@@ -1,0 +1,142 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.main-title {
+    font-family: 'Black Ops One', cursive;
+    color: white;
+    font-size: 1.5em;
+}
+
+.calculator-container {
+    background-color: #214466;
+}
+
+.name {
+    color: #f07a2d;
+}
+
+.calculator {
+    background-color: #7d7b7c;
+    width: 20em;
+    height: 30em;
+}
+
+.top-container {
+    background-color: #222222;
+    height: 30%;
+}
+
+.display {
+    background-color: #c8d9bf;
+    font-family: 'Black Ops One', cursive;
+    height: 80%;
+    overflow: hidden;
+}
+
+.display > p {
+    position: absolute;
+    right: 1em;
+    top: 0.3em;
+}
+
+.display > h2 {
+    position: absolute;
+    right: 0.3em;
+    bottom: 0.2em;
+}
+
+.bottom-container {
+    height: 70%;
+}
+
+.buttons-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    row-gap: 0.5em;
+    column-gap: 0.5em;
+    justify-content: center;
+    align-content: center;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.btn {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.orange-btn {
+    background-color: #f6a03f;
+}
+
+.orange-btn:hover {
+    background-color: #e5953a;
+}
+
+.btn.orange-btn:active {
+    background-color: #fd9115;
+    border-color: #ffd4a2;
+}
+
+.onoff {
+    font-size: 1em;
+}
+
+.operation-btn {
+    color: #212529;
+    background-color: #f8f8f8;
+}
+
+.operation-btn:hover {
+    background-color: #e4e4e4;
+}
+
+.btn.operation-btn:active {
+    background-color: #d7d7d7;
+    border-color: #f8f8f8;
+}
+
+.digit-btn,
+.decimal-btn {
+    background-color: #222222;
+}
+
+.digit-btn:hover,
+.decimal-btn:hover {
+    background-color: #383838;
+}
+
+.btn.digit-btn:active,
+.btn.decimal-btn:active {
+    background-color: #383838;
+    border-color: #d0d0d0;
+}
+
+.button-container.zero {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.equal-btn {
+    background-color: #ff0e0e;
+}
+
+.equal-btn:hover {
+    background-color: #ff3c3c;
+}
+
+.btn.equal-btn:active {
+    background-color: #ff0000;
+}

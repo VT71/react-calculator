@@ -8,6 +8,18 @@ const initialState = {
     result: '',
 };
 
+const isOperator = (char) => {
+    switch (char) {
+        case '+':
+        case '-':
+        case 'x':
+        case '÷':
+            return true;
+        default:
+            return false;
+    }
+};
+
 const calculatorSlice = createSlice({
     name: 'calculator',
     initialState,
@@ -46,10 +58,11 @@ const calculatorSlice = createSlice({
         removeOne(state) {
             if (state.currentInput.length === 1) {
                 if (
-                    state.currentInput === '+' ||
-                    state.currentInput === '-' ||
-                    state.currentInput === 'x' ||
-                    state.currentInput === '÷'
+                    isOperator(state.currentInput) &&
+                    !state.wholeInput.slice(0, -1).includes('+') &&
+                    !state.wholeInput.slice(0, -1).includes('-') &&
+                    !state.wholeInput.slice(0, -1).includes('x') &&
+                    !state.wholeInput.slice(0, -1).includes('÷')
                 ) {
                     state.wholeInput = state.wholeInput.slice(0, -1);
                     state.currentInput = state.wholeInput;
@@ -140,12 +153,7 @@ const calculatorSlice = createSlice({
             }
         },
         setDecimal(state) {
-            if (
-                state.currentInput === '+' ||
-                state.currentInput === '-' ||
-                state.currentInput === 'x' ||
-                state.currentInput === '÷'
-            ) {
+            if (isOperator(state.currentInput)) {
                 state.currentInput = '0.';
                 state.wholeInput = state.wholeInput + state.currentInput;
             } else if (!state.currentInput.includes('.') && !state.calculated) {
@@ -167,38 +175,23 @@ const calculatorSlice = createSlice({
                     case '÷':
                         if (
                             action.payload === '-' &&
-                            state.wholeInput.charAt(
-                                state.wholeInput.length - 2
-                            ) !== '+' &&
-                            state.wholeInput.charAt(
-                                state.wholeInput.length - 2
-                            ) !== '-' &&
-                            state.wholeInput.charAt(
-                                state.wholeInput.length - 2
-                            ) !== 'x' &&
-                            state.wholeInput.charAt(
-                                state.wholeInput.length - 2
-                            ) !== '÷'
+                            !isOperator(
+                                state.wholeInput.charAt(
+                                    state.wholeInput.length - 2
+                                )
+                            )
                         ) {
                             state.currentInput = action.payload;
                             state.wholeInput =
                                 state.wholeInput + action.payload;
                         } else {
                             if (
-                                state.wholeInput.charAt(
-                                    state.wholeInput.length - 2
-                                ) !== '+' &&
-                                state.wholeInput.charAt(
-                                    state.wholeInput.length - 2
-                                ) !== '-' &&
-                                state.wholeInput.charAt(
-                                    state.wholeInput.length - 2
-                                ) !== 'x' &&
-                                state.wholeInput.charAt(
-                                    state.wholeInput.length - 2
-                                ) !== '÷'
+                                !isOperator(
+                                    state.wholeInput.charAt(
+                                        state.wholeInput.length - 2
+                                    )
+                                )
                             ) {
-                                console.log('2');
                                 state.currentInput = action.payload;
                                 state.wholeInput =
                                     state.wholeInput.slice(0, -1) +
@@ -255,13 +248,7 @@ const calculatorSlice = createSlice({
                 let calculation = state.wholeInput.replaceAll('x', '*');
                 calculation = calculation.replaceAll('÷', '/');
                 calculation = calculation.replaceAll('--', '+');
-                console.log('CALCULATION: ' + calculation);
-                if (
-                    state.currentInput === '+' ||
-                    state.currentInput === '-' ||
-                    state.currentInput === 'x' ||
-                    state.currentInput === '÷'
-                ) {
+                if (isOperator(state.currentInput)) {
                     state.result = parseFloat(
                         Function(
                             `"use strict"; return(${calculation.slice(0, -1)})`
@@ -287,7 +274,6 @@ const calculatorSlice = createSlice({
                     state.wholeInput.match(/.+?(?==)/).toString() +
                     '=' +
                     state.result;
-                console.log('SEPARATE FORMULA: ' + state.wholeInput);
                 state.currentInput = state.result;
             }
         },

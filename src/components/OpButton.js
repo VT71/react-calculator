@@ -13,7 +13,32 @@ function OpButton({ operation }) {
     const dispatch = useDispatch();
 
     let buttonFeature;
+    let buttonId = '';
     let classN = 'btn operation-btn p-0 w-100 h-100';
+
+    switch (operation) {
+        case '+':
+            buttonId = 'add';
+            break;
+        case '-':
+            buttonId = 'subtract';
+            break;
+        case 'x':
+            buttonId = 'multiply';
+            break;
+        case '÷':
+            buttonId = 'divide';
+            break;
+        case '.':
+            buttonId = 'decimal';
+            break;
+        case '=':
+            buttonId = 'equals';
+            break;
+        case 'C':
+            buttonId = 'clear';
+            break;
+    }
 
     switch (operation) {
         case 'ON/OFF':
@@ -53,6 +78,7 @@ function OpButton({ operation }) {
             buttonFeature = () => {
                 dispatch(calculate());
             };
+
             classN = 'btn equal-btn operation-btn text-white p-0 w-100 h-100';
             break;
         default:
@@ -61,7 +87,7 @@ function OpButton({ operation }) {
 
     return (
         <div className='button-container'>
-            <button className={classN} onClick={buttonFeature}>
+            <button id={buttonId} className={classN} onClick={buttonFeature}>
                 {operation}
             </button>
         </div>

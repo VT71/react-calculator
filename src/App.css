@@ -47,7 +47,7 @@ html {
     top: 0.3em;
 }
 
-.display > h2 {
+#display > h2 {
     position: absolute;
     right: 0.3em;
     bottom: 0.2em;

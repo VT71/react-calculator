@@ -55,6 +55,8 @@ function OpButton({ operation }) {
             };
             classN = 'btn equal-btn operation-btn text-white p-0 w-100 h-100';
             break;
+        default:
+            console.log('Operation Button not recognised');
     }
 
     return (

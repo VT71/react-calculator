@@ -110,11 +110,11 @@ const calculatorSlice = createSlice({
                     case '0':
                         if (action.payload === '0') {
                             state.currentInput = '0';
-                            if (state.wholeInput != '') {
+                            if (state.wholeInput !== '') {
                                 if (
                                     state.wholeInput.charAt(
                                         state.wholeInput.length - 1
-                                    ) != '0'
+                                    ) !== '0'
                                 ) {
                                     state.wholeInput = state.wholeInput + '0';
                                 }
@@ -150,15 +150,16 @@ const calculatorSlice = createSlice({
                 state.wholeInput = state.wholeInput + state.currentInput;
             } else if (!state.currentInput.includes('.') && !state.calculated) {
                 state.currentInput = state.currentInput + '.';
-                state.wholeInput = state.wholeInput + state.currentInput;
-                state.decimal = true;
-            } else if (state.calculated) {
-                state.currentInput = '0' + '.';
+                state.wholeInput = state.wholeInput + '.';
+            } else if (state.calculated && !state.currentInput.includes('.')) {
+                state.currentInput = state.currentInput + '.';
                 state.wholeInput = state.currentInput;
+                state.result = '';
+                state.calculated = false;
             }
         },
         addOperation(state, action) {
-            if (state.wholeInput != '') {
+            if (state.wholeInput !== '' && state.wholeInput !== '-') {
                 switch (state.wholeInput.charAt(state.wholeInput.length - 1)) {
                     case '+':
                     case '-':
@@ -179,12 +180,10 @@ const calculatorSlice = createSlice({
                                 state.wholeInput.length - 2
                             ) !== '÷'
                         ) {
-                            console.log('inside iffff1');
                             state.currentInput = action.payload;
                             state.wholeInput =
                                 state.wholeInput + action.payload;
                         } else {
-                            console.log('inside else1');
                             if (
                                 state.wholeInput.charAt(
                                     state.wholeInput.length - 2
@@ -199,17 +198,32 @@ const calculatorSlice = createSlice({
                                     state.wholeInput.length - 2
                                 ) !== '÷'
                             ) {
-                                console.log('inside iffff2');
+                                console.log('2');
                                 state.currentInput = action.payload;
                                 state.wholeInput =
                                     state.wholeInput.slice(0, -1) +
                                     action.payload;
                             } else {
-                                console.log('inside else2');
-                                state.currentInput = action.payload;
-                                state.wholeInput =
-                                    state.wholeInput.slice(0, -2) +
-                                    action.payload;
+                                if (
+                                    state.wholeInput.charAt(
+                                        state.wholeInput.length - 2
+                                    ) !== '-' &&
+                                    action.payload === '-'
+                                ) {
+                                    state.currentInput =
+                                        state.wholeInput.charAt(
+                                            state.wholeInput.length - 2
+                                        );
+                                    state.wholeInput = state.wholeInput.slice(
+                                        0,
+                                        -1
+                                    );
+                                } else {
+                                    state.currentInput = action.payload;
+                                    state.wholeInput =
+                                        state.wholeInput.slice(0, -2) +
+                                        action.payload;
+                                }
                             }
                         }
 
@@ -226,14 +240,22 @@ const calculatorSlice = createSlice({
                                 state.wholeInput + action.payload;
                         }
                 }
+            } else {
+                if (action.payload === '-') {
+                    state.currentInput = action.payload;
+                    state.wholeInput = action.payload;
+                } else if (action.payload === '+' && state.wholeInput === '-') {
+                    state.currentInput = '0';
+                    state.wholeInput = '';
+                }
             }
         },
         calculate(state) {
-            console.log('FUNCTION: ' + Function('"use strict"; return(2+2)')());
             if (!state.calculated) {
-                let calculation = state.wholeInput.replace('x', '*');
-                calculation = calculation.replace('÷', '/');
-                console.log(calculation);
+                let calculation = state.wholeInput.replaceAll('x', '*');
+                calculation = calculation.replaceAll('÷', '/');
+                calculation = calculation.replaceAll('--', '+');
+                console.log('CALCULATION: ' + calculation);
                 if (
                     state.currentInput === '+' ||
                     state.currentInput === '-' ||
